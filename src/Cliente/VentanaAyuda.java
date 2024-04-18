@@ -23,7 +23,7 @@ import java.net.URL;
 public class VentanaAyuda extends JFrame{
     
     /** Creates a new instance of VentanaAyuda */
-     JScrollPane panelPrincipal;
+    JScrollPane panelPrincipal;
     JEditorPane html;
     public VentanaAyuda() {
         super("Ventana de Ayuda :");
