@@ -67,11 +67,11 @@ class Servidor extends JFrame
       }
    }
    
-   public static void main(String abc[]) throws IOException
-   {                
-     Servidor ser= new Servidor();
-     ser.runServer();
-   }
+   //public static void main(String abc[]) throws IOException
+   //{                
+    // Servidor ser= new Servidor();
+    // ser.runServer();
+   //}
 }
 
 
