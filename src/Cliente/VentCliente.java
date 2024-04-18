@@ -147,7 +147,8 @@ public class VentCliente extends JFrame implements ActionListener {
         nomUsers.remove(user);
         ponerDatosList(this.lstActivos,nomUsers);
      }
-    private void ponerDatosList(JList list,final Vector datos)
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+   private void ponerDatosList(JList list,final Vector datos)
     {
         list.setModel(new AbstractListModel() {            
             @Override
@@ -167,7 +168,7 @@ public class VentCliente extends JFrame implements ActionListener {
         }
        if(comand.compareTo("Acerca")==0)
        {   
-           JOptionPane.showMessageDialog(this,"José Valdez/Javier Vargas","Desarrollado por",JOptionPane.INFORMATION_MESSAGE);           
+           JOptionPane.showMessageDialog(this,"Josï¿½ Valdez/Javier Vargas","Desarrollado por",JOptionPane.INFORMATION_MESSAGE);           
        }
         if(evt.getSource()==this.butEnviar || evt.getSource()==this.txtMensage)
         {
