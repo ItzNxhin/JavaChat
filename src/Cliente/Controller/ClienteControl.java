@@ -15,6 +15,7 @@ public class ClienteControl implements ActionListener{
     private VentCliente vClient;
     private ConexionCliente conexion;
     private Avisos avisos;
+    private VentanaAyuda vAyuda;
     
 
     public ClienteControl() throws IOException{
@@ -43,7 +44,7 @@ public class ClienteControl implements ActionListener{
         }
         if (e.getSource()==vClient.butEnviar || e.getSource()==vClient.txtMensage){
         String mensaje = vClient.txtMensage.getText();     
-           cliente.flujo(mensaje);
+           conexion.flujo(mensaje);
            vClient.txtMensage.setText("");
         }
     }
