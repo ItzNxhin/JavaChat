@@ -4,6 +4,7 @@
  */
 package Servidor.Controller;
 
+import Servidor.View.Servidor;
 import java.io.IOException;
 
 /**
