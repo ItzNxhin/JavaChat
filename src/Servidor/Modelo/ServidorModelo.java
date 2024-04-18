@@ -1,45 +1,15 @@
-/*
- * Server.java
- *
- * Created on 21 de marzo de 2008, 12:02 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-/* 
- * 
-/*
- * package Servidor;
- */
-/**
- *
- * @author Administrador
- */
-/* 
+package Servidor.Modelo;
 import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
 import javax.swing.*;
 
-class Servidor extends JFrame
-{
-   JTextArea txaMostrar;
-   public Servidor()
-   {
-      super("Consola servidor");
-      txaMostrar=new JTextArea();      
-    
-      this.setContentPane(new JScrollPane(txaMostrar));
-      setSize(350,350);
-      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      setVisible(true);      
-      
-   }
-   public void mostrar(String msg)
-   {
-      txaMostrar.append(msg+"\n");
-   }
+/**
+ *
+ * @author Sara
+ */
+public class ServidorModelo{
    public void runServer()
    {
       ServerSocket serv=null;//para comunicacion
@@ -68,15 +38,7 @@ class Servidor extends JFrame
       }catch(IOException e){
          mostrar("error :"+e);
       }
-   }
-   
-   public static void main(String abc[]) throws IOException
-   {                
-     Servidor ser= new Servidor();
-     ser.runServer();
-   }
+   }{
+    
 }
-*/
-
-
-
+}
