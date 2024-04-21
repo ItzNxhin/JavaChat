@@ -10,6 +10,7 @@ import javax.swing.*;
  * @author Sara
  */
 public class ServidorModelo{
+   
    public void runServer()
    {
       ServerSocket serv=null;//para comunicacion
