@@ -4,11 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import Cliente.Cliente;
 import Cliente.VentCliente;
 import Cliente.Model.ConexionCliente;
 import Cliente.View.VentanaAyuda;
 import Cliente.View.Avisos;
+import Cliente.View.VentanaPrivada;
 
 public class ClienteControl implements ActionListener{
 
@@ -16,7 +16,8 @@ public class ClienteControl implements ActionListener{
     private ConexionCliente conexion;
     private Avisos avisos;
     private VentanaAyuda vAyuda;
-    
+    private VentanaPrivada vPrivada;
+    private ConexionCliente cliente;
 
     public ClienteControl() throws IOException{
         avisos = new Avisos();
@@ -31,6 +32,9 @@ public class ClienteControl implements ActionListener{
         vClient.setNombreUser(nick);
         conexion.conexion();
         new HiloCliente(conexion.getEntrada2(), vClient, avisos::consola).start();
+
+        vPrivada.getButton().addActionListener(this);
+        vPrivada.getTxtMensage().addActionListener(this);
     }
 
     public void actionPerformed(ActionEvent e){
@@ -46,6 +50,21 @@ public class ClienteControl implements ActionListener{
         String mensaje = vClient.txtMensage.getText();     
            conexion.flujo(mensaje);
            vClient.txtMensage.setText("");
+        }
+        if(e.getSource()==vClient.butPrivado)
+        {
+           int pos=vClient.lstActivos.getSelectedIndex();
+           if(pos>=0)              
+           {
+              vPrivada.setAmigo(vClient.nomUsers.get(pos));           
+              vPrivada.setVisible(true);
+              if(e.getSource() == vPrivada.getButton()){
+                String mensaje = vPrivada.getTxtMensage().getText();              
+                vPrivada.mostrarMsg(cliente.getNombre()+">"+mensaje);
+                cliente.flujo(vPrivada.getAmigo(),mensaje);
+                vPrivada.getTxtMensage().setText("");
+              }
+           }
         }
     }
     

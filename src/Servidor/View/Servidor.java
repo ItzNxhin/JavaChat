@@ -32,4 +32,8 @@ public class Servidor extends JFrame
    {
       txaMostrar.append(msg+"\n");
    }
+   public void mostrarMensaje(String mensaje) {
+      System.out.println(mensaje);
+  }
+  
 }
