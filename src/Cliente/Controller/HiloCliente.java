@@ -1,24 +1,20 @@
 package Cliente.Controller;
 
-import java.net.*;
-import java.lang.*;
 import java.io.*;
-import java.util.*;
 import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import Cliente.VentCliente;
+import Cliente.View.VentanaCliente;
 
 public class HiloCliente extends Thread {
     Consumer<String> mensajes;
     DataInputStream entrada;
-    VentCliente vcli;
+    VentanaCliente vcli;
+    ClienteControl principal;
 
-    public HiloCliente(DataInputStream entrada, VentCliente vcli, Consumer<String> mensajes) throws IOException {
+    public HiloCliente(DataInputStream entrada,ClienteControl principal, VentanaCliente vcli, Consumer<String> mensajes) throws IOException {
         this.entrada = entrada;
         this.vcli = vcli;
         this.mensajes = mensajes;
+        this.principal = principal;
     }
 
     public void run() {
@@ -40,7 +36,7 @@ public class HiloCliente extends Thread {
                     case 3:// mensage de amigo
                         amigo = entrada.readUTF();
                         menser = entrada.readUTF();
-                        vcli.mensageAmigo(amigo, menser);
+                        principal.mensageAmigo(amigo, menser);
                         mensajes.accept("ECO del servidor:" + menser);
                         break;
                 }

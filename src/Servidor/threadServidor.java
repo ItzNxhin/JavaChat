@@ -18,7 +18,7 @@ import javax.swing.*;
  *
  * @author Administrador
  */
-/*
+
 public class threadServidor extends Thread {
    
      Socket scli=null;
@@ -152,4 +152,3 @@ public class threadServidor extends Thread {
         }
    }
 }
-*/
