@@ -4,18 +4,21 @@ import java.net.*;
 import java.lang.*;
 import java.io.*;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import Cliente.VentCliente;
 
 public class HiloCliente extends Thread {
+    Consumer<String> mensajes;
     DataInputStream entrada;
     VentCliente vcli;
 
-    public HiloCliente(DataInputStream entrada, VentCliente vcli) throws IOException {
+    public HiloCliente(DataInputStream entrada, VentCliente vcli, Consumer<String> mensajes) throws IOException {
         this.entrada = entrada;
         this.vcli = vcli;
+        this.mensajes = mensajes;
     }
 
     public void run() {
@@ -27,7 +30,7 @@ public class HiloCliente extends Thread {
                 switch (opcion) {
                     case 1:// mensage enviado
                         menser = entrada.readUTF();
-                        System.out.println("ECO del servidor:" + menser);
+                        mensajes.accept("ECO del servidor:" + menser);
                         vcli.mostrarMsg(menser);
                         break;
                     case 2:// se agrega
@@ -38,15 +41,15 @@ public class HiloCliente extends Thread {
                         amigo = entrada.readUTF();
                         menser = entrada.readUTF();
                         vcli.mensageAmigo(amigo, menser);
-                        System.out.println("ECO del servidor:" + menser);
+                        mensajes.accept("ECO del servidor:" + menser);
                         break;
                 }
             } catch (IOException e) {
-                System.out.println("Error en la comunicaci�n " + "Informaci�n para el usuario");
+                mensajes.accept("Error en la comunicaci�n " + "Informaci�n para el usuario");
                 break;
             }
         }
-        System.out.println("se desconecto el servidor");
+        mensajes.accept("se desconecto el servidor");
     }
 
 }

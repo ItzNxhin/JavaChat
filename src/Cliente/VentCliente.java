@@ -19,6 +19,9 @@ import java.net.Socket;
 import java.util.Vector;
 import javax.swing.*;
 import javax.swing.border.Border;
+
+import Cliente.View.VentanaAyuda;
+
 import javax.swing.JOptionPane.*;
 
 /**
@@ -28,11 +31,11 @@ import javax.swing.JOptionPane.*;
 public class VentCliente extends JFrame implements ActionListener {
      String mensajeCliente;
      JTextArea panMostrar;
-     JTextField txtMensage;
-     JButton butEnviar;
+     public JTextField txtMensage;
+     public JButton butEnviar;
      JLabel lblNomUser;
-     JList lstActivos;
-     JButton butPrivado;
+     public JList lstActivos;
+     public JButton butPrivado;
      Cliente cliente;	
      
       
@@ -45,7 +48,7 @@ public class VentCliente extends JFrame implements ActionListener {
       
       JOptionPane AcercaDe;
      
-     Vector<String> nomUsers;
+     public Vector<String> nomUsers;
      VentPrivada ventPrivada;
      /** Creates a new instance of Cliente */
      public VentCliente() throws IOException {

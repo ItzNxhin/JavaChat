@@ -7,13 +7,8 @@
  * and open the template in the editor.
  */
 
-package Cliente;
+package Cliente.View;
 import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
-import java.io.*;
-import java.lang.*;
-import java.util.*;
 import java.net.URL;
 
 /**

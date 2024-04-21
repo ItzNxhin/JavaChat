@@ -95,6 +95,8 @@ public class Cliente
          System.out.println("error...." + e);
       }
    }
-   
+   public String getNomCliente(){
+      return this.nomCliente;
+   }
   
 }

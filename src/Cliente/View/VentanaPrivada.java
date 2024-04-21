@@ -1,13 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package Cliente;
+package Cliente.View;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.*;
@@ -16,24 +9,19 @@ import javax.swing.*;
  *
  * @author Administrador
  */
-public class VentPrivada extends JFrame implements ActionListener {
+public class VentanaPrivada extends JFrame {
    JTextArea panMostrar;
    JTextField txtMensage;
    JButton butEnviar;
-
-   Cliente cliente;
    String amigo;
 
-   public VentPrivada(Cliente cliente) {
+   public VentanaPrivada() {
       super("Amigo");
-      this.cliente = cliente;
       txtMensage = new JTextField(30);
       butEnviar = new JButton("Enviar");
       panMostrar = new JTextArea();
       panMostrar.setEditable(false);
       txtMensage.requestFocus();
-      txtMensage.addActionListener(this);
-      butEnviar.addActionListener(this);
 
       JPanel panAbajo = new JPanel();
       panAbajo.setLayout(new BorderLayout());
@@ -101,15 +89,4 @@ public class VentPrivada extends JFrame implements ActionListener {
    public String getAmigo() {
       return this.amigo;
    }
-
-   @Override
-   public void actionPerformed(ActionEvent e) {
-      if (e.getSource() == getButton()) {
-         String mensaje = txtMensage.getText();
-         mostrarMsg(cliente.getNombre() + ">" + mensaje);
-         cliente.flujo(amigo, mensaje);
-         txtMensage.setText("");
-      }
-   }
-
 }
