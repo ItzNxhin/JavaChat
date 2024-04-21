@@ -34,8 +34,8 @@ public class VentCliente extends JFrame implements ActionListener {
      public JTextField txtMensage;
      public JButton butEnviar;
      JLabel lblNomUser;
-     JList lstActivos;
-     JButton butPrivado;
+     public JList lstActivos;
+     public JButton butPrivado;
      Cliente cliente;	
      
       
@@ -48,7 +48,7 @@ public class VentCliente extends JFrame implements ActionListener {
       
       JOptionPane AcercaDe;
      
-     Vector<String> nomUsers;
+     public Vector<String> nomUsers;
      VentPrivada ventPrivada;
      /** Creates a new instance of Cliente */
      public VentCliente() throws IOException {
