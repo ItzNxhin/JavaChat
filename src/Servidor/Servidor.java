@@ -15,6 +15,7 @@
  *
  * @author Administrador
  */
+/*/
 package Servidor;
 import java.awt.*;
 import java.io.*;
@@ -77,6 +78,4 @@ class Servidor extends JFrame
    }
 }
 
-
-
-
+*/

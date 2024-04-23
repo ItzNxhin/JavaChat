@@ -1,59 +1,41 @@
-/*
- * threadServidor.java
- *
- * Created on 23 de marzo de 2008, 19:36
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-/*
-package Servidor;
-import java.awt.*;
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import javax.swing.*;
-*/
-/**
- *
- * @author Administrador
- */
-/*
-public class threadServidor extends Thread {
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+
+public class threadServidor extends Thread{
+    Socket scli=null;
+    Socket scli2=null;
+    DataInputStream entrada=null;
+    DataOutputStream salida=null;
+    DataOutputStream salida2=null;
+    public static Vector<threadServidor> clientesActivos=new Vector();	
+    String nameUser;
    
-     Socket scli=null;
-     Socket scli2=null;
-     DataInputStream entrada=null;
-     DataOutputStream salida=null;
-     DataOutputStream salida2=null;
-     public static Vector<threadServidor> clientesActivos=new Vector();	
-     String nameUser;
-     Servidor serv;
-     
-     public threadServidor(Socket scliente,Socket scliente2,Servidor serv)
-     {
-        scli=scliente;
-        scli2=scliente2;
-        this.serv=serv;
-        nameUser="";
-        clientesActivos.add(this);        
-        serv.mostrar("cliente agregado: "+this);			
-     }
-     
-     public String getNameUser()
-     {
-       return nameUser;
-     }
-     
-     public void setNameUser(String name)
-     {
-       nameUser=name;
-     }
-     
-     public void run()
-     {
-    	serv.mostrar(".::Esperando Mensajes :");
-    	
+    ControlServer serv;
+
+
+    public threadServidor(Socket scliente,Socket scliente2,ControlServer serv)
+    {
+       scli=scliente;
+       scli2=scliente2;
+       this.serv=serv;
+       nameUser="";
+       clientesActivos.add(this);  
+       //variable de tipo servidor con mensaje extraido de la vista
+       serv.mostrar("cliente agregado: "+this);			
+    }
+
+    public String getNameUser() {
+        return nameUser;
+    }
+
+    public void setNameUser(String name) {
+        nameUser = name;
+    }
+    public void run(){
+        serv.mostrar(".::Esperando Mensajes :");
+       
     	try
     	{
           entrada=new DataInputStream(scli.getInputStream());
@@ -104,7 +86,7 @@ public class threadServidor extends Thread {
         catch(Exception et)
         {serv.mostrar("no se puede cerrar el socket");}   
      }
-     
+
      public void enviaMsg(String mencli2)
      {
         threadServidor user=null;
@@ -152,4 +134,3 @@ public class threadServidor extends Thread {
         }
    }
 }
-*/

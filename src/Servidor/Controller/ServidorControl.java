@@ -1,6 +1,7 @@
-package Controlador;
-import View.Servidor;
-
+package Servidor.Controller;
+import Servidor.threadServidor;
+import Servidor.Model.ServidorModelo;
+import Servidor.View.ServidorVista;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -8,89 +9,45 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class ServidorControl {
-    private Conexion modelo;
-    private Servidor vista;
-    private ArrayList<ConexionCliente> clientesActivos;
+    
+    private ServidorVista vista;
 
-    public ServidorControl(ServidorModelo modelo, ServidorVista vista) {
-        this.modelo = modelo;
-        this.vista = vista;
-        this.clientesActivos = new ArrayList<>();
+    public ServidorControl() {
+        vista = new ServidorView();
+        runServer();
     }
-
-    public void manejarConexion(ConexionCliente conexionCliente) {
-        try {
-            DataInputStream entrada = new DataInputStream(conexionCliente.getSocket().getInputStream());
-            DataOutputStream salida = new DataOutputStream(conexionCliente.getSocket().getOutputStream());
-
-            // Asignar nombre de usuario
-            String nombreUsuario = entrada.readUTF();
-            conexionCliente.setNombreUsuario(nombreUsuario);
-            // Agregar cliente a la lista de activos
-            clientesActivos.add(conexionCliente);
-
-            // Lógica para manejar los mensajes
-            while (true) {
-                int opcion = entrada.readInt();
-                switch (opcion) {
-                    case 1: // Envío de mensaje a todos
-                        String mensaje = entrada.readUTF();
-                        enviarMensajeATodos(conexionCliente, mensaje);
-                        break;
-                    case 2: // Envío de lista de activos
-                        enviarListaActivos(conexionCliente);
-                        break;
-                    case 3: // Envío de mensaje a uno solo
-                        String amigo = entrada.readUTF();
-                        String mensajePrivado = entrada.readUTF();
-                        enviarMensajeAUno(conexionCliente, amigo, mensajePrivado);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    private void enviarMensajeATodos(ConexionCliente remitente, String mensaje) {
-        for (ConexionCliente cliente : clientesActivos) {
+    public void runServer()
+   {
+      ServerSocket serv=null;//para comunicacion
+      ServerSocket serv2=null;//para enviar mensajes
+      boolean listening=true;
+      try{
+        serv=new ServerSocket(8081);
+         serv2=new ServerSocket(8082);
+		 //variable tipo vista.mostrar
+         mostrar(".::Servidor activo :");
+         while(listening)
+         {
+            Socket sock=null,sock2=null;
             try {
-                DataOutputStream salida = new DataOutputStream(cliente.getSocket().getOutputStream());
-                salida.writeInt(1); // Opción de mensaje
-                salida.writeUTF(remitente.getNombreUsuario() + ": " + mensaje);
-            } catch (IOException e) {
-                e.printStackTrace();
+				//variable tipo vista.mostrar
+               mostrar("Esperando Usuarios");
+               sock=serv.accept();
+               sock2=serv2.accept();
+            } catch (IOException e)
+            {
+				//variable tipo vista.mostrar
+               mostrar("Accept failed: " + serv + ", " + e.getMessage());
+               continue;
             }
-        }
-    }
-
-    private void enviarListaActivos(ConexionCliente destino) {
-        try {
-            DataOutputStream salida = new DataOutputStream(destino.getSocket().getOutputStream());
-            salida.writeInt(2); // Opción de lista de activos
-            salida.writeInt(clientesActivos.size()); // Número de clientes activos
-            for (ConexionCliente cliente : clientesActivos) {
-                salida.writeUTF(cliente.getNombreUsuario());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void enviarMensajeAUno(ConexionCliente remitente, String destinatario, String mensaje) {
-        for (ConexionCliente cliente : clientesActivos) {
-            if (cliente.getNombreUsuario().equals(destinatario)) {
-                try {
-                    DataOutputStream salida = new DataOutputStream(cliente.getSocket().getOutputStream());
-                    salida.writeInt(3); // Opción de mensaje privado
-                    salida.writeUTF(remitente.getNombreUsuario());
-                    salida.writeUTF(mensaje);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-            }
-        }
-    }
+            threadServidor user=new threadServidor(sock,sock2,this);   
+			//importante el start
+	    user.start();
+         }
+         
+      }catch(IOException e){
+		  //variable tipo vista.mostrar
+         mostrar("error :"+e);
+      }
+   }
 }

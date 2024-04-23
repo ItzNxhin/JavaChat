@@ -14,14 +14,13 @@ import javax.swing.*;
  *
  * @author Sara
  */
-public class Servidor extends JFrame
-{
-   JTextArea txaMostrar;
-   public Servidor()
-   {
+public class ServidorVista extends JFrame{
+   private JTextArea txaMostrar;
+
+   public ServidorVista()    {
       super("Consola servidor");
-      txaMostrar=new JTextArea();      
-    
+      txaMostrar = new JTextArea();   
+      
       this.setContentPane(new JScrollPane(txaMostrar));
       setSize(350,350);
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
