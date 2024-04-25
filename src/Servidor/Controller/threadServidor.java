@@ -17,7 +17,7 @@ public class threadServidor extends Thread {
    String nameUser;// Nombre del usuario
    ServidorControl serv; // Referencia al controlador del servidor
 
-// Constructor de la clase
+   // Constructor de la clase
    public threadServidor(Socket scliente, Socket scliente2, ServidorControl serv) {
       scli = scliente; // Asigna el socket para mensajes generales
       scli2 = scliente2; // Asigna el socket para mensajes privados
@@ -25,26 +25,33 @@ public class threadServidor extends Thread {
       nameUser = ""; // Inicializa el nombre del usuario
       clientesActivos.add(this);// Agrega este hilo a la lista de clientes activos
       // variable de tipo servidor con mensaje extraido de la vista
-      serv.mostrar("cliente agregado: " + this); 
+      serv.mostrar("cliente agregado: " + this);
    }
-// Getter para obtener el nombre del usuario
+
+   // Getter para obtener el nombre del usuario
    public String getNameUser() {
       return nameUser;
    }
-// Setter para establecer el nombre del usuario
+
+   // Setter para establecer el nombre del usuario
    public void setNameUser(String name) {
       nameUser = name;
    }
-// Método que se ejecuta cuando el hilo inicia
+
+   /**
+    * Método que se ejecuta cuando el hilo inicia
+    */
    public void run() {
-      // Muestra un mensaje en la vista del servidor indicando que está esperando mensajes
+      // Muestra un mensaje en la vista del servidor indicando que está esperando
+      // mensajes
       serv.mostrar(".::Esperando Mensajes :");
 
       try {
          // Establece los flujos de entrada y salida de datos para mensajes generales
          entrada = new DataInputStream(scli.getInputStream());
          salida = new DataOutputStream(scli.getOutputStream());
-          // Establece el nombre de usuario recibido desde el clientesalida2 = new DataOutputStream(scli2.getOutputStream());
+         // Establece el nombre de usuario recibido desde el clientesalida2 = new
+         // DataOutputStream(scli2.getOutputStream());
          this.setNameUser(entrada.readUTF());
          // Envía la lista de usuarios activos a este cliente
          enviaUserActivos();
@@ -83,7 +90,8 @@ public class threadServidor extends Thread {
             break;
          }
       }
-      // Muestra un mensaje en la vista del servidor indicando que se removió un usuario
+      // Muestra un mensaje en la vista del servidor indicando que se removió un
+      // usuario
       serv.mostrar("Se removio un usuario");
       // Remueve este hilo de la lista de clientes activos
       clientesActivos.removeElement(this);
@@ -96,7 +104,10 @@ public class threadServidor extends Thread {
          serv.mostrar("no se puede cerrar el socket");
       }
    }
-// Método para enviar un mensaje a todos los usuarios
+
+   /**
+    * Método para enviar un mensaje a todos los usuarios
+    */
    public void enviaMsg(String mencli2) {
       threadServidor user = null;
       for (int i = 0; i < clientesActivos.size(); i++) {
@@ -111,7 +122,11 @@ public class threadServidor extends Thread {
          }
       }
    }
-// Método para enviar la lista de usuarios activos a este usuario
+
+   /**
+    * Método para enviar la lista de usuarios activos a este usuario
+    */
+
    public void enviaUserActivos() {
       threadServidor user = null;
       for (int i = 0; i < clientesActivos.size(); i++) {
@@ -126,7 +141,10 @@ public class threadServidor extends Thread {
          }
       }
    }
-// Método para enviar un mensaje privado a un usuario específico
+
+   /**
+    * Método para enviar un mensaje privado a un usuario específico
+    */
    private void enviaMsg(String amigo, String mencli) {
       threadServidor user = null;
       for (int i = 0; i < clientesActivos.size(); i++) {

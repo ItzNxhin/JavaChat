@@ -5,19 +5,23 @@ import java.util.function.Consumer;
 import Cliente.View.VentanaCliente;
 
 public class HiloCliente extends Thread {
-    Consumer<String> mensajes; //Mostrar mensajes al usuario
+    Consumer<String> mensajes; // Mostrar mensajes al usuario
     DataInputStream entrada; // Flujo de entrada para recibir mensajes del servidor
     VentanaCliente vcli; // Referencia a la ventana del cliente
     ClienteControl principal; // Referencia al controlador principal del cliente
 
     // Constructor de la clase
-    public HiloCliente(DataInputStream entrada,ClienteControl principal, VentanaCliente vcli, Consumer<String> mensajes) throws IOException {
+    public HiloCliente(DataInputStream entrada, ClienteControl principal, VentanaCliente vcli,
+            Consumer<String> mensajes) throws IOException {
         this.entrada = entrada;
         this.vcli = vcli;
         this.mensajes = mensajes;
         this.principal = principal;
     }
-// Método que se ejecuta cuando se inicia el hilo
+
+    /**
+     * Método que se ejecuta cuando se inicia el hilo
+     */
     public void run() {
         String menser = "", amigo = "";
         int opcion = 0;
@@ -48,7 +52,7 @@ public class HiloCliente extends Thread {
                 break;
             }
         }
-         // Muestra un mensaje de que el servidor se desconectó
+        // Muestra un mensaje de que el servidor se desconectó
         mensajes.accept("se desconecto el servidor");
     }
 
