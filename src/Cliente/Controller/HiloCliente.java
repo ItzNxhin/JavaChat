@@ -1,21 +1,17 @@
 package Cliente.Controller;
 
 import java.io.*;
-import java.util.function.Consumer;
 import Cliente.View.VentanaCliente;
 
 public class HiloCliente extends Thread {
-    Consumer<String> mensajes; // Mostrar mensajes al usuario
     DataInputStream entrada; // Flujo de entrada para recibir mensajes del servidor
     VentanaCliente vcli; // Referencia a la ventana del cliente
     ClienteControl principal; // Referencia al controlador principal del cliente
 
     // Constructor de la clase
-    public HiloCliente(DataInputStream entrada, ClienteControl principal, VentanaCliente vcli,
-            Consumer<String> mensajes) throws IOException {
+    public HiloCliente(DataInputStream entrada,ClienteControl principal, VentanaCliente vcli) throws IOException {
         this.entrada = entrada;
         this.vcli = vcli;
-        this.mensajes = mensajes;
         this.principal = principal;
     }
 
@@ -32,7 +28,7 @@ public class HiloCliente extends Thread {
                 switch (opcion) {
                     case 1:// mensage enviado
                         menser = entrada.readUTF(); // Lee el mensaje del servidor
-                        mensajes.accept("ECO del servidor:" + menser);
+                        principal.avisos.consola("ECO del servidor:" + menser);
                         vcli.mostrarMsg(menser); // Muestra el mensaje en la ventana del cliente
                         break;
                     case 2:// se agrega
@@ -43,17 +39,26 @@ public class HiloCliente extends Thread {
                         amigo = entrada.readUTF(); // Lee el nombre del amigo del servidor
                         menser = entrada.readUTF(); // Lee el mensaje del servidor
                         principal.mensageAmigo(amigo, menser);
-                        mensajes.accept("ECO del servidor:" + menser);
+                        principal.avisos.consola("ECO del servidor:" + menser);
                         break;
+                    case 4:
+                        vcli.dispose();
+                        principal.vPrivada.dispose();
+                        principal.avisos.baneado();
+                        interrupt();
+                        return;
+                    case 5:
+                        menser = entrada.readUTF();
+                        vcli.removerUser(menser);
                 }
             } catch (IOException e) {
                 // Muestra un mensaje de error al usuario
-                mensajes.accept("Error en la comunicaci�n " + "Informaci�n para el usuario");
+                principal.avisos.consola("Error en la comunicaci�n " + "Informaci�n para el usuario");
                 break;
             }
         }
-        // Muestra un mensaje de que el servidor se desconectó
-        mensajes.accept("se desconecto el servidor");
+         // Muestra un mensaje de que el servidor se desconectó
+         principal.avisos.consola("se desconecto el servidor");
     }
 
 }

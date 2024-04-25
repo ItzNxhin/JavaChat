@@ -139,6 +139,14 @@ public class VentanaCliente extends JFrame {
     }
 
     /**
+     * Metodo para remover usuario
+     */
+    public void removerUser(String user) {
+        nomUsers.remove(user);
+        ponerDatosList(this.lstActivos, nomUsers);
+    }
+
+    /**
      * Método para eliminar un usuario de la lista de usuarios activos
      */
 

@@ -34,4 +34,11 @@ public class Avisos {
         // usuario (nick)
         return JOptionPane.showInputDialog("Introducir Nick :");
     }
+
+    /**
+     * Metodo para mostrar el aviso de que el cliente ha sido baneado
+     */
+    public void baneado(){
+        JOptionPane.showMessageDialog(null, "HAS SIDO BANEADO POR GAMIN. CON ESA BOCA BESAS A TU MAMA? CORRIGETE", "BANEADO", JOptionPane.INFORMATION_MESSAGE);
+    }
 }

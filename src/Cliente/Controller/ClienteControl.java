@@ -8,23 +8,37 @@ import Cliente.Model.ConexionCliente;
 import Cliente.View.VentanaAyuda;
 import Cliente.View.VentanaCliente;
 import Cliente.View.Avisos;
+import Cliente.View.FileSelector;
 import Cliente.View.VentanaPrivada;
+import Cliente.Model.LecturaPuertos;
 
 public class ClienteControl implements ActionListener {
 
+    private FileSelector fc;
+    private LecturaPuertos pt;
     private VentanaCliente vClient;
     private ConexionCliente conexion;
-    private Avisos avisos;
+    public Avisos avisos;
     private VentanaAyuda vAyuda;
-    private VentanaPrivada vPrivada;
+    public VentanaPrivada vPrivada;
 
     // Constructor del controlador del cliente
     public ClienteControl() throws IOException {
+        fc = new FileSelector();
+        pt = new LecturaPuertos();
+        fc.fileP();
+        fc.fProp.showOpenDialog(fc.fProp);
+        pt.setProp(fc.fProp.getSelectedFile());
+        try {
+            pt.cargarPuertos();
+        } catch (Exception e) {
+            fc.error();
+        }
         avisos = new Avisos(); // Crea una instancia del componente de avisos
         ConexionCliente.IP_SERVER = avisos.ip(); // Obtiene la dirección IP del servidor desde el usuario
         vClient = new VentanaCliente();// Crea la ventana principal del cliente
         vPrivada = new VentanaPrivada(); // Crea la ventana de chat privado
-        conexion = new ConexionCliente(avisos::consola); // Inicia la conexión con el servidor
+        conexion = new ConexionCliente(avisos::consola, pt.getP1(), pt.getP2()); // Inicia la conexión con el servidor
         // ActionListener para la ventana principal del cliente
         vClient.txtMensage.addActionListener(this);
         vClient.butEnviar.addActionListener(this);
@@ -44,14 +58,12 @@ public class ClienteControl implements ActionListener {
     /**
      * Método para inicializar el cliente
      */
-
     private void iniciar() throws IOException {
         String nick = avisos.nick(); // Solicita al usuario que ingrese su nombre de usuario
         conexion.setNomCliente(nick); // Establece el nombre de usuario en la conexión
         vClient.setNombreUser(nick); // Muestra el nombre de usuario en la ventana principal del cliente
         conexion.conexion(); // Establece la conexión con el servidor
-        new HiloCliente(conexion.getEntrada2(), this, vClient, avisos::consola).start();// Inicia el hilo para recibir
-                                                                                        // mensajes
+        new HiloCliente(conexion.getEntrada2(), this, vClient).start();// Inicia el hilo para recibir mensajes
         vClient.ponerActivos(conexion.pedirUsuarios()); // Obtiene y muestra la lista de usuarios activos
         vClient.setVisible(true);// Hace visible la ventana principal del cliente
     }

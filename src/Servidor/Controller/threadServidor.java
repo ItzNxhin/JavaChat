@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class threadServidor extends Thread {
@@ -16,9 +17,11 @@ public class threadServidor extends Thread {
    public static Vector<threadServidor> clientesActivos = new Vector<>();
    String nameUser;// Nombre del usuario
    ServidorControl serv; // Referencia al controlador del servidor
+   ArrayList<String> badwords; //Lista de palabras a beanear
 
    // Constructor de la clase
-   public threadServidor(Socket scliente, Socket scliente2, ServidorControl serv) {
+   public threadServidor(Socket scliente, Socket scliente2, ServidorControl serv, ArrayList<String> badwords) {
+      this.badwords = badwords;
       scli = scliente; // Asigna el socket para mensajes generales
       scli2 = scliente2; // Asigna el socket para mensajes privados
       this.serv = serv;// Asigna la referencia al controlador del servidor
@@ -42,16 +45,15 @@ public class threadServidor extends Thread {
     * Método que se ejecuta cuando el hilo inicia
     */
    public void run() {
-      // Muestra un mensaje en la vista del servidor indicando que está esperando
-      // mensajes
+      // Muestra un mensaje en la vista del servidor indicando que está esperando mensajes
       serv.mostrar(".::Esperando Mensajes :");
 
       try {
          // Establece los flujos de entrada y salida de datos para mensajes generales
          entrada = new DataInputStream(scli.getInputStream());
          salida = new DataOutputStream(scli.getOutputStream());
-         // Establece el nombre de usuario recibido desde el clientesalida2 = new
-         // DataOutputStream(scli2.getOutputStream());
+         salida2 = new DataOutputStream(scli2.getOutputStream());
+          // Establece el nombre de usuario recibido desde el cliente
          this.setNameUser(entrada.readUTF());
          // Envía la lista de usuarios activos a este cliente
          enviaUserActivos();
@@ -68,9 +70,20 @@ public class threadServidor extends Thread {
             opcion = entrada.readInt();
             switch (opcion) {
                case 1:// envio de mensage a todos
+                  Boolean baneo=false;
                   mencli = entrada.readUTF();
-                  serv.mostrar("mensaje recibido " + mencli);
-                  enviaMsg(mencli);
+                  String aux = mencli.toLowerCase();
+                  //Verificar si el mensaje no es vulgar, en caso afirmativo, banear
+                  for(String i : badwords){
+                     if (aux.contains(i)){
+                        baneo();
+                        baneo=true;
+                     }
+                  }
+                  if(!baneo){
+                     serv.mostrar("mensaje recibido " + mencli);
+                     enviaMsg(mencli);
+                  }
                   break;
                case 2:// envio de lista de activos
                   numUsers = clientesActivos.size();
@@ -90,8 +103,7 @@ public class threadServidor extends Thread {
             break;
          }
       }
-      // Muestra un mensaje en la vista del servidor indicando que se removió un
-      // usuario
+      // Muestra un mensaje en la vista del servidor indicando que se removió un usuario
       serv.mostrar("Se removio un usuario");
       // Remueve este hilo de la lista de clientes activos
       clientesActivos.removeElement(this);
@@ -160,5 +172,50 @@ public class threadServidor extends Thread {
             e.printStackTrace();
          }
       }
+   }
+
+   /**
+    * Metodo encargado de ejecutar el baneo, y ordenar los respectivos avisos
+    */
+   private void baneo(){
+      String userBan = "";
+      threadServidor user = null;
+      //Hacer el baneo del usuario
+      for (int i = 0; i < clientesActivos.size(); i++) {
+         serv.mostrar("EL USUARIO "+nameUser+" HA SIDO BANEADO POR VULGAR");
+         try {
+            user = clientesActivos.get(i);
+            if (user.nameUser.equals(nameUser)) {
+               user = clientesActivos.get(i);
+               userBan = nameUser;
+               user.salida2.writeInt(4);// opcion de mensage          
+            }
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
+      }
+      //Avisar del baneo a los demas usuarios
+      for (int i = 0; i < clientesActivos.size(); i++) {
+         try {
+            user = clientesActivos.get(i);
+            // Envía el mensaje a cada usuario activo
+            user.salida2.writeInt(1);// opcion de mensage
+            user.salida2.writeUTF("" + this.getNameUser() + " >" + "HA SIDO VULGAR Y SE FUE BANEAO"); // Mensaje con nombre de usuario
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
+      }
+      //Quitar de los usuarios activos, en cliente, el usuario baneado
+      for (int i = 0; i < clientesActivos.size(); i++) {
+         try {
+            user = clientesActivos.get(i);
+            // Envía el mensaje a cada usuario activo
+            user.salida2.writeInt(5);// opcion de mensage
+            user.salida2.writeUTF(userBan); // Mensaje con nombre de usuario
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
+      }
+      
    }
 }

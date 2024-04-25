@@ -17,11 +17,23 @@ public class ConexionServidor {
     // Consumidores para manejar mensajes y lanzar hilos
     Consumer<Object> lanzarHilo;
     Consumer<String> avisos;
+    private int p1;
+    private int p2;
 
-    // Constructor que recibe los consumidores para manejar mensajes y lanzar hilos
-    public ConexionServidor(Consumer<String> avisos, Consumer<Object> lanzarHilo) {
+    /**
+     * Constructor que recibe los consumidores para manejar mensajes, lanzar hilos,
+     * y recibe los puertos
+     * 
+     * @param avisos
+     * @param lanzarHilo
+     * @param p1
+     * @param p2
+     */
+    public ConexionServidor(Consumer<String> avisos, Consumer<Object> lanzarHilo, int p1, int p2) {
         this.avisos = avisos;
         this.lanzarHilo = lanzarHilo;
+        this.p1 = p1;
+        this.p2 = p2;
     }
 
     // Getters y setters para los sockets y ServerSockets
@@ -63,15 +75,15 @@ public class ConexionServidor {
     public void runServer() {
         boolean listening = true;
         try {
-            // Se crean los ServerSockets en los puertos 8081 y 8082
-            serv = new ServerSocket(8081);
-            serv2 = new ServerSocket(8082);
+            // Se crean los ServerSockets en los puertos asignados
+            serv = new ServerSocket(p1);
+            serv2 = new ServerSocket(p2);
             avisos.accept(".::Servidor activo :"); // Se emite un aviso de que el servidor está activo
             while (listening) {
-
+                
                 try {
                     avisos.accept("Esperando Usuarios");// Se emite un aviso de que se está esperando a los usuarios
-                    // Se aceptan las conexiones de los usuarios
+                 // Se aceptan las conexiones de los usuarios
                     sock = serv.accept();
                     sock2 = serv2.accept();
                 } catch (IOException e) {
@@ -84,8 +96,7 @@ public class ConexionServidor {
             }
 
         } catch (IOException e) {
-            // Si ocurre un error durante la ejecución del servidor, se emite un mensaje de
-            // error
+            // Si ocurre un error durante la ejecución del servidor, se emite un mensaje de error
             avisos.accept("error :" + e);
         }
     }
