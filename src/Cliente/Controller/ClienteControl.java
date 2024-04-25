@@ -81,10 +81,7 @@ public class ClienteControl implements ActionListener {
             vAyuda.setVisible(true);
         }
         if (e.getActionCommand().compareTo("Acerca") == 0) {
-            /*
-             * Aca deberiamos llamar la clase de los avisos
-             * con el aviso que dice en el action performed de la ventana cliente
-             */
+            avisos.aceraDe();
         }
         // Maneja el envío de mensajes desde la ventana principal del cliente
         if (e.getSource() == vClient.butEnviar || e.getSource() == vClient.txtMensage) {

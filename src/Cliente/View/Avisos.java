@@ -41,4 +41,11 @@ public class Avisos {
     public void baneado(){
         JOptionPane.showMessageDialog(null, "HAS SIDO BANEADO POR GAMIN. CON ESA BOCA BESAS A TU MAMA? CORRIGETE", "BANEADO", JOptionPane.INFORMATION_MESSAGE);
     }
+
+    /**
+     * Metodo para mostrar el aviso de que el cliente ha sido baneado
+     */
+    public void aceraDe(){
+        JOptionPane.showMessageDialog(null, "ESTE PROGRAMA ES EL TALLER #4", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+    }
 }
