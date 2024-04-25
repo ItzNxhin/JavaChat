@@ -9,36 +9,42 @@ import javax.swing.*;
  *
  * @author Administrador
  */
+/**
+ * Ventana para conversaciones privadas entre usuarios.
+ */
 public class VentanaPrivada extends JFrame {
-   JTextArea panMostrar;
-   JTextField txtMensage;
-   JButton butEnviar;
-   String amigo;
+   JTextArea panMostrar; // Área de texto para mostrar mensajes
+   JTextField txtMensage; // Campo de texto para escribir mensajes
+   JButton butEnviar; // Botón para enviar mensajes
+   String amigo; // Nombre del amigo con el que se está chateando
+
 
    public VentanaPrivada() {
-      super("Amigo");
-      txtMensage = new JTextField(30);
-      butEnviar = new JButton("Enviar");
-      panMostrar = new JTextArea();
-      panMostrar.setEditable(false);
-      txtMensage.requestFocus();
+      super("Amigo"); // Título de la ventana
+      txtMensage = new JTextField(30); // Campo de texto para escribir mensajes
+      butEnviar = new JButton("Enviar"); // Botón para enviar mensajes
+      panMostrar = new JTextArea(); // Área de texto para mostrar mensajes
+      panMostrar.setEditable(false); // Área de texto no editable
+      txtMensage.requestFocus(); // Pide el enfoque al campo de texto para escribir mensajes
 
-      JPanel panAbajo = new JPanel();
-      panAbajo.setLayout(new BorderLayout());
-      panAbajo.add(new JLabel("  Ingrese mensage a enviar:"),
+      JPanel panAbajo = new JPanel(); // Panel para la parte inferior de la ventana
+      panAbajo.setLayout(new BorderLayout()); // Diseño del panel como BorderLayout
+      panAbajo.add(new JLabel("  Ingrese mensage a enviar:"), // Etiqueta para pedir al usuario que ingrese un mensaje
             BorderLayout.NORTH);
-      panAbajo.add(txtMensage, BorderLayout.CENTER);
-      panAbajo.add(butEnviar, BorderLayout.EAST);
+      panAbajo.add(txtMensage, BorderLayout.CENTER); // Campo de texto para escribir mensajes
+      panAbajo.add(butEnviar, BorderLayout.EAST); // Botón para enviar mensajes
 
-      setLayout(new BorderLayout());
-      add(new JScrollPane(panMostrar), BorderLayout.CENTER);
+      setLayout(new BorderLayout());// Diseño del panel como BorderLayout
+      // Área de texto para mostrar mensajes con barra de desplazamiento
+      add(new JScrollPane(panMostrar), BorderLayout.CENTER); 
       add(panAbajo, BorderLayout.SOUTH);
-
+// Inicializa el nombre del amigo como una cadena vacía
       amigo = "";
 
       this.addWindowListener(new WindowListener() {
+         // Método llamado cuando se cierra la ventana
          public void windowClosing(WindowEvent e) {
-            cerrarVentana();
+            cerrarVentana(); // Método para cerrar la ventana
          }
 
          public void windowClosed(WindowEvent e) {
@@ -61,23 +67,23 @@ public class VentanaPrivada extends JFrame {
 
       });
 
-      setSize(300, 300);
-      setLocation(570, 90);
+      setSize(300, 300); //Tamaño de la ventana
+      setLocation(570, 90); //Ubicación de la ventana
    }
-
+ // Método para establecer el nombre del amigo en el título de la ventana
    public void setAmigo(String ami) {
       this.amigo = ami;
       this.setTitle(ami);
    }
-
+ // Método para cerrar la ventana
    private void cerrarVentana() {
-      this.setVisible(false);
+      this.setVisible(false); // Hace que la ventana no sea visible
    }
-
+// Método para mostrar un mensaje en el área de texto
    public void mostrarMsg(String msg) {
       this.panMostrar.append(msg + "\n");
    }
-
+//Getters 
    public JButton getButton() {
       return this.butEnviar;
    }

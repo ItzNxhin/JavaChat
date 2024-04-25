@@ -17,14 +17,14 @@ public class ClienteControl implements ActionListener {
     private Avisos avisos;
     private VentanaAyuda vAyuda;
     private VentanaPrivada vPrivada;
-
+// Constructor del controlador del cliente
     public ClienteControl() throws IOException {
-        avisos = new Avisos();
-        ConexionCliente.IP_SERVER = avisos.ip();
-        vClient = new VentanaCliente();
-        vPrivada = new VentanaPrivada();
-        conexion = new ConexionCliente(avisos::consola);
-
+        avisos = new Avisos(); // Crea una instancia del componente de avisos
+        ConexionCliente.IP_SERVER = avisos.ip(); // Obtiene la dirección IP del servidor desde el usuario
+        vClient = new VentanaCliente();// Crea la ventana principal del cliente
+        vPrivada = new VentanaPrivada(); // Crea la ventana de chat privado
+        conexion = new ConexionCliente(avisos::consola); // Inicia la conexión con el servidor
+// ActionListener para la ventana principal del cliente
         vClient.txtMensage.addActionListener(this);
         vClient.butEnviar.addActionListener(this);
         vClient.butPrivado.addActionListener(this);
@@ -32,21 +32,22 @@ public class ClienteControl implements ActionListener {
         vClient.help.addActionListener(this);
         vClient.acercaD.setActionCommand("Acerca");
         vClient.acercaD.addActionListener(this);
-
+// ActionListener para la ventana de chat privado
         vPrivada.getButton().addActionListener(this);
         vPrivada.getTxtMensage().addActionListener(this);
+        // Inicia el cliente
         iniciar();
 
     }
-
+// Método para inicializar el cliente
     private void iniciar() throws IOException {
-        String nick = avisos.nick();
-        conexion.setNomCliente(nick);
-        vClient.setNombreUser(nick);
-        conexion.conexion();
-        new HiloCliente(conexion.getEntrada2(), this, vClient, avisos::consola).start();
-        vClient.ponerActivos(conexion.pedirUsuarios());
-        vClient.setVisible(true);
+        String nick = avisos.nick(); // Solicita al usuario que ingrese su nombre de usuario
+        conexion.setNomCliente(nick); // Establece el nombre de usuario en la conexión
+        vClient.setNombreUser(nick); // Muestra el nombre de usuario en la ventana principal del cliente
+        conexion.conexion(); // Establece la conexión con el servidor
+        new HiloCliente(conexion.getEntrada2(), this, vClient, avisos::consola).start();// Inicia el hilo para recibir mensajes
+        vClient.ponerActivos(conexion.pedirUsuarios()); // Obtiene y muestra la lista de usuarios activos
+        vClient.setVisible(true);// Hace visible la ventana principal del cliente
     }
 
     public void mensageAmigo(String amigo, String msg) {
@@ -56,7 +57,7 @@ public class ClienteControl implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-
+// Maneja las acciones del menú de ayuda
         if (e.getActionCommand().compareTo("help") == 0) {
             vAyuda = new VentanaAyuda();
             vAyuda.setVisible(true);
@@ -67,23 +68,24 @@ public class ClienteControl implements ActionListener {
              * con el aviso que dice en el action performed de la ventana cliente
              */
         }
+        // Maneja el envío de mensajes desde la ventana principal del cliente
         if (e.getSource() == vClient.butEnviar || e.getSource() == vClient.txtMensage) {
-            String mensaje = vClient.txtMensage.getText();
-            conexion.flujo(mensaje);
-            vClient.txtMensage.setText("");
+            String mensaje = vClient.txtMensage.getText();// Obtiene el mensaje ingresado por el usuario
+            conexion.flujo(mensaje);// Envía el mensaje al servidor
+            vClient.txtMensage.setText(""); // Limpia el campo de texto
         }
         if (e.getSource() == vClient.butPrivado) {
             int pos = vClient.lstActivos.getSelectedIndex();
             if (pos >= 0) {
                 vPrivada.setAmigo(vClient.nomUsers.get(pos));
-                vPrivada.setVisible(true);
+                vPrivada.setVisible(true); // Muestra la ventana de chat privado
             }
         }
         if (e.getSource() == vPrivada.getButton()) {
-            String mensaje = vPrivada.getTxtMensage().getText();
-            vPrivada.mostrarMsg(conexion.getNombre() + ">" + mensaje);
-            conexion.flujo(vPrivada.getAmigo(), mensaje);
-            vPrivada.getTxtMensage().setText("");
+            String mensaje = vPrivada.getTxtMensage().getText();// Obtiene el mensaje
+            vPrivada.mostrarMsg(conexion.getNombre() + ">" + mensaje);// Muestra el mensaje 
+            conexion.flujo(vPrivada.getAmigo(), mensaje); // Envía el mensaje
+            vPrivada.getTxtMensage().setText("");// Limpia el campo de texto
         }
     }
 
