@@ -16,7 +16,7 @@ public class ClienteControl implements ActionListener {
 
     private FileSelector fc;
     private LecturaPuertos pt;
-    private VentanaCliente vClient;
+    public VentanaCliente vClient;
     private ConexionCliente conexion;
     public Avisos avisos;
     private VentanaAyuda vAyuda;
@@ -63,7 +63,7 @@ public class ClienteControl implements ActionListener {
         conexion.setNomCliente(nick); // Establece el nombre de usuario en la conexión
         vClient.setNombreUser(nick); // Muestra el nombre de usuario en la ventana principal del cliente
         conexion.conexion(); // Establece la conexión con el servidor
-        new HiloCliente(conexion.getEntrada2(), this, vClient).start();// Inicia el hilo para recibir mensajes
+        new HiloCliente(conexion.getEntrada2(),this, this::mensaje).start();// Inicia el hilo para recibir mensajes
         vClient.ponerActivos(conexion.pedirUsuarios()); // Obtiene y muestra la lista de usuarios activos
         vClient.setVisible(true);// Hace visible la ventana principal del cliente
     }
@@ -102,6 +102,20 @@ public class ClienteControl implements ActionListener {
             conexion.flujo(vPrivada.getAmigo(), mensaje); // Envía el mensaje
             vPrivada.getTxtMensage().setText("");// Limpia el campo de texto
         }
+    }
+
+    public void ban() {
+        vClient.dispose();
+        vPrivada.dispose();
+        avisos.baneado();
+    }
+
+    public void removerUser(String menser) {
+        vClient.removerUser(menser);
+    }
+
+    public void mensaje(String x){
+        vClient.mostrarMsg(x);
     }
 
 }

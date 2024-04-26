@@ -1,0 +1,6 @@
+Taller #4 - Sockets (Chat en MVC)
+Participantes:
+	- Nahin Jose Peñaranda Mejia 	20231020032
+	- Sara Nicolle Martinez Moreno	20231020116
+	- Marlon Yecid Riveros Guio	20231020208
+Link del repositorio en GitHub: https://github.com/ItzNxhin/JavaChat
