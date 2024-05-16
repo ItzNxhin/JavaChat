@@ -7,6 +7,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Vector;
 
+/**
+ *
+ * @author nahin
+ */
 public class threadServidor extends Thread {
    Socket scli = null; // Socket para la comunicación con el cliente para mensajes generales
    Socket scli2 = null;// Socket para la comunicación con el cliente para enviar mensajes privados
@@ -14,12 +18,24 @@ public class threadServidor extends Thread {
    DataOutputStream salida = null;// Stream de salida de datos hacia el cliente para mensajes generales
    DataOutputStream salida2 = null; // Stream de salida de datos hacia el cliente para enviar mensajes privados
    // Vector que almacena los hilos activos de los clientes
+
+    /**
+     *
+     */
    public static Vector<threadServidor> clientesActivos = new Vector<>();
    String nameUser;// Nombre del usuario
    ServidorControl serv; // Referencia al controlador del servidor
    ArrayList<String> badwords; //Lista de palabras a beanear
 
    // Constructor de la clase
+
+    /**
+     *
+     * @param scliente
+     * @param scliente2
+     * @param serv
+     * @param badwords
+     */
    public threadServidor(Socket scliente, Socket scliente2, ServidorControl serv, ArrayList<String> badwords) {
       this.badwords = badwords;
       scli = scliente; // Asigna el socket para mensajes generales
@@ -32,11 +48,21 @@ public class threadServidor extends Thread {
    }
 
    // Getter para obtener el nombre del usuario
+
+    /**
+     *
+     * @return
+     */
    public String getNameUser() {
       return nameUser;
    }
 
    // Setter para establecer el nombre del usuario
+
+    /**
+     *
+     * @param name
+     */
    public void setNameUser(String name) {
       nameUser = name;
    }
@@ -119,6 +145,7 @@ public class threadServidor extends Thread {
 
    /**
     * Método para enviar un mensaje a todos los usuarios
+     * @param mencli2
     */
    public void enviaMsg(String mencli2) {
       threadServidor user = null;

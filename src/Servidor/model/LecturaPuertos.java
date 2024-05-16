@@ -13,15 +13,34 @@ public class LecturaPuertos {
     private int p1;
     private int p2;
 
+    /**
+     *
+     * @return
+     */
     public int getP1() {
         return p1;
     }
+
+    /**
+     *
+     * @param p1
+     */
     public void setP1(int p1) {
         this.p1 = p1;
     }
+
+    /**
+     *
+     * @return
+     */
     public int getP2() {
         return p2;
     }
+
+    /**
+     *
+     * @param p2
+     */
     public void setP2(int p2) {
         this.p2 = p2;
     }
@@ -44,6 +63,9 @@ public class LecturaPuertos {
         }
     }
 
+    /**
+     *
+     */
     public void cargarPuertos(){
         p1 = Integer.parseInt(prop.getProperty("port.1"));
         p2 = Integer.parseInt(prop.getProperty("port.2"));

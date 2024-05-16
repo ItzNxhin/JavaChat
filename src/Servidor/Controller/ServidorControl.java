@@ -8,6 +8,10 @@ import Servidor.model.LecturaPuertos;
 
 import java.io.IOException;
 
+/**
+ *
+ * @author nahin
+ */
 public class ServidorControl {
 
    private FileSelector fc;
@@ -17,6 +21,11 @@ public class ServidorControl {
    private ConexionServidor con;// Conexión del servidor
 
    // Constructor de la clase
+
+    /**
+     *
+     * @throws IOException
+     */
    public ServidorControl() throws IOException{
       bd = new LecturaBadWords();
       pt = new LecturaPuertos();
@@ -47,6 +56,7 @@ public class ServidorControl {
 
    /**
     * Método para manejar un hilo de conexión del servidor
+     * @param x
     */
    public void hilo(Object x) {
       // Crea un nuevo hilo de servidor
@@ -57,6 +67,7 @@ public class ServidorControl {
 
    /**
     * Método para mostrar mensajes en la vista del servidor
+     * @param x
     */
    public void mostrar(String x) {
       // Llama al método mostrar de la vista del servidor

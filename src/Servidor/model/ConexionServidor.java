@@ -37,34 +37,67 @@ public class ConexionServidor {
     }
 
     // Getters y setters para los sockets y ServerSockets
+
+    /**
+     *
+     * @return
+     */
     public Socket getSock() {
         return sock;
     }
 
+    /**
+     *
+     * @param sock
+     */
     public void setSock(Socket sock) {
         this.sock = sock;
     }
 
+    /**
+     *
+     * @return
+     */
     public Socket getSock2() {
         return sock2;
     }
 
+    /**
+     *
+     * @param sock2
+     */
     public void setSock2(Socket sock2) {
         this.sock2 = sock2;
     }
 
+    /**
+     *
+     * @return
+     */
     public ServerSocket getServ() {
         return serv;
     }
 
+    /**
+     *
+     * @param serv
+     */
     public void setServ(ServerSocket serv) {
         this.serv = serv;
     }
 
+    /**
+     *
+     * @return
+     */
     public ServerSocket getServ2() {
         return serv2;
     }
 
+    /**
+     *
+     * @param serv2
+     */
     public void setServ2(ServerSocket serv2) {
         this.serv2 = serv2;
     }

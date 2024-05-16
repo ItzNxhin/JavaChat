@@ -33,10 +33,19 @@ public class LecturaBadWords {
         }
     }
     // Métodos getter y setter para la lista de palabras cargadas
+
+    /**
+     *
+     * @return
+     */
     public ArrayList<String> getBadwords() {
         return badwords;
     }
 
+    /**
+     *
+     * @param badwords
+     */
     public void setBadwords(ArrayList<String> badwords) {
         this.badwords = badwords;
     }
